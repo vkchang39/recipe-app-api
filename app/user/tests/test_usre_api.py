@@ -66,7 +66,7 @@ class PublicUserApiTests(TestCase):
         self.assertNotIn('token', res.data)
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_create_blank_password(self):
+    def test_create_token_blank_password(self):
         payload = {'email': 'test@example.com', 'password': ''}
         res = self.client.post(TOKEN_URL, payload)
 
@@ -79,7 +79,7 @@ class PublicUserApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class PrivateUserApiTest(TestCase):
+class PrivateUserApiTests(TestCase):
     def setUp(self):
         self.user = create_user(
             email='test@example.com',
@@ -98,7 +98,7 @@ class PrivateUserApiTest(TestCase):
             'email': self.user.email,
         })
 
-    def post_me_not_allowed(self):
+    def test_post_me_not_allowed(self):
         res = self.client.post(ME_URL)
 
         self.assertEqual(res.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
